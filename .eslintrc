@@ -1,0 +1,55 @@
+{
+  "parser"  : "babel-eslint",
+  "extends" : [
+    "standard",
+    "standard-react"
+  ],
+  "plugins" : [
+    "flow-vars"
+  ],
+  "env"     : {
+    "browser" : true
+  },
+  "globals" : {
+    "$" : true,
+    "Stripe" : true,
+    "adsbygoogle" : true,
+    "google" : true,
+    "FB" : true,
+    "Action"       : false,
+    "__DEV__"      : false,
+    "__PROD__"     : false,
+    "__DEBUG__"    : false,
+    "__DEBUG_NEW_WINDOW__" : false,
+    "__BASENAME__" : false
+  },
+  "rules": {
+    "flow-vars/define-flow-type": 1,
+    "flow-vars/use-flow-type": 1,
+    "jsx-no-bind": [0, {
+      "allowBind": true
+    }],
+    "no-unused-vars" : 0,
+    "comma-spacing" : 0,
+    "semi-spacing" : 0,
+    "block-spacing" : 0,
+    "space-before-function-paren" : 0,
+    "react/jsx-boolean-value" : 0,
+    "react/jsx-no-bind" : 0,
+    "space-infix-ops" : 0,
+    "no-multi-spaces" : 0,
+    "key-spacing" : 0,
+    "max-len" : 0,
+    "react/no-did-update-set-state" : 0,
+    "react/jsx-space-before-closing" : 0,
+    "space-before-blocks" : 0,
+    "jsx-quotes" : 0,
+    "semi" : 0,
+    "eol-last": 0,
+    "indent": 0,
+    "react/jsx-indent": 0,
+    "quotes": 0,
+    "no-trailing-spaces": 0,
+    "comma-dangle": 0
+  }
+}

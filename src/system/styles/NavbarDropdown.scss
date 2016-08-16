@@ -1,0 +1,30 @@
+:global {
+  @import 'base';
+  @import 'vendor/normalize';
+
+
+  .navbar li:hover ul{
+      display:block;
+  }
+
+  .navbar > li {
+    position: relative;
+    display: block;
+    float: left;
+  }
+
+  .headerlogo {
+    display: inline-block;
+    height: 50px;
+    width: 200px;
+    background-image: url('//d34ou6gzeud9fg.cloudfront.net/images/main/sprites.png');
+    background-size: 240px 500px;
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+  }
+
+  .navbar-initial {
+    background-color: #FDFDFD;
+  }
+
+}
