@@ -70,9 +70,9 @@ class Landing extends React.Component<void, Props, void> {
     if (src) {
       style.background= `url(${src}) no-repeat center center`;
     }
-    style.background= `url(${'//d34ou6gzeud9fg.cloudfront.net/images/main/table-blur.jpg'}) no-repeat center center`;
+    style.background= `url(${'//i.stack.imgur.com/bJzDb.jpg'}) no-repeat center center`;
     style.backgroundSize= 'cover';
-    style.marginBottom= -100
+    // style.marginBottom= -100
 
     return (
       <div className='intro-header' style={style}>
