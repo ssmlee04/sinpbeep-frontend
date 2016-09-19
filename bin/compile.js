@@ -16,10 +16,6 @@ const paths = config.utils_paths
       process.exit(1)
     }
     debug('Copy static assets to dist folder.')
-    console.log(paths.client('static'))
-    console.log(paths.client('static'))
-    console.log(paths.client('static'))
-    console.log(paths.client('static'))
     // fs.copySync(paths.client('static'), paths.dist())
   } catch (e) {
     debug('Compiler encountered an error.', e)

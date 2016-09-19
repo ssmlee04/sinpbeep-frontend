@@ -2,9 +2,9 @@
 // Do not require this directly. Use ./src/config instead.
 
 export default {
-  apiRoot: 'https://apis.clearstreet.io',
+  apiRoot: 'http://apis.singlebeep.com',
 
-  proxyRoot: 'https://clearstreet.io',
+  proxyRoot: 'http://singlebeep.com',
 
   // 500px consumer key
   consumerKey: 'CLmpqnpwGLKetORtjc5gb9tC2hllfd6cqdfzHqFD',

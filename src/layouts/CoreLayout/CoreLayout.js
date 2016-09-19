@@ -17,12 +17,12 @@ function CoreLayout ({ children }) {
   return (
     <div className='page-container'>
       <Navbar />
-      <Popups />
       <div className='view-container'>
         {children}
       </div>
     </div>
   )
+      // <Popups />
       // <Footer/>
 }
 
