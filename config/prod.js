@@ -2,9 +2,9 @@
 // Do not require this directly. Use ./src/config instead.
 
 export default {
-  apiRoot: 'http://apis.singlebeep.com',
+  apiRoot: 'https://singlebeep.com',
 
-  proxyRoot: 'http://singlebeep.com',
+  proxyRoot: 'https://singlebeep.com',
 
   // 500px consumer key
   consumerKey: 'CLmpqnpwGLKetORtjc5gb9tC2hllfd6cqdfzHqFD',

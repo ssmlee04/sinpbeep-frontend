@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react'
 import '../../styles/core.scss'
 import { connect } from 'react-redux'
-import Footer from './../../system/components/Footer'
 import Navbar from './../../system/components/Navbar'
-import Popups from './../../system/components/Popups'
+import Footer from './../../system/components/Footer'
+
 // Note: Stateless/function components *will not* hot reload!
 // react-transform *only* works on component classes.
 //
@@ -22,8 +22,6 @@ function CoreLayout ({ children }) {
       </div>
     </div>
   )
-      // <Popups />
-      // <Footer/>
 }
 
 CoreLayout.propTypes = {

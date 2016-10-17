@@ -11,12 +11,12 @@ deployment:
       - npm run deploy-dev
       - /bin/bash scripts/publish-dev.sh
   stage: 
-    branch: [stage]
+    branch: [xxx]
     commands:
       - npm run deploy-stage
       - /bin/bash scripts/publish-stage.sh
   production:
-    branch: [production, development]
+    branch: [production, stage, development]
     commands:
-      - npm run deploy-prod
+      - npm run deploy
       - /bin/bash scripts/publish-prod.sh
