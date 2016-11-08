@@ -1,6 +1,6 @@
 /* eslint key-spacing:0 */
 export default (config) => ({
-  compiler_public_path: `https://singlebeep.com/`,
+  compiler_public_path: `https://maplecrab.com/`,
   compiler_fail_on_warning : false,
   compiler_hash_type       : 'chunkhash',
   compiler_devtool         : null,
@@ -13,7 +13,7 @@ export default (config) => ({
     enabled: true,
     options: {
       // koa-proxy options
-      host: 'https://singlebeep.com',
+      host: 'https://maplecrab.com',
       match: /^\/apis\/.*/
     }
   }

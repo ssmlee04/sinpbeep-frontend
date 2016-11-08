@@ -8,9 +8,17 @@ import { Route, IndexRoute } from 'react-router'
 // your current file is.
 import CoreLayout from 'layouts/CoreLayout'
 import HomeView from 'system/components/HomeView'
+import LoginContainer from 'system/containers/LoginContainer'
+import ThankyouComponent from 'system/components/ThankyouComponent'
+import VerifyEmailContainer from 'system/containers/VerifyEmailContainer'
+import RegisterContainer from 'system/containers/RegisterContainer'
 
 export default (store) => (
   <Route path='/' component={CoreLayout}>
+    <Route path='/auth/login' component={LoginContainer} />
+    <Route path='/auth/register' component={RegisterContainer} />
+    <Route path='/thankyou' component={ThankyouComponent} />
+    <Route path='/verify/:hash' component={VerifyEmailContainer} />
     <Route path='*' component={HomeView} />
     <IndexRoute component={HomeView} />
   </Route>

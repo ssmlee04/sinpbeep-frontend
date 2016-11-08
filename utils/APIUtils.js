@@ -4,6 +4,7 @@ import Promise from 'bluebird'
 import request from 'superagent'
 // import { assign } from 'lodash'
 import config from '../config'
+import cookie from 'react-cookie';
 
 const debug = require('debug')('isomorphic500')
 
@@ -22,29 +23,30 @@ const APIUtils = {
 
     request
       .get(url)
-      // .withCredentials()
       // .set('accept-language', connectSid)
       // .set('Cookie', options && options.connectSid || '')
       .query(query)
+      .withCredentials()
       .end((err, res) => {
         debug('Received response %s from %s', res && res.status, url)
 
         if (err) {
-          const errBody = JSON.parse(JSON.parse(JSON.stringify(err)).response.text)
-          errBody.status = err.status
-          if (err.status) {
-            // Normalize statusCode vs. status
-            err.statusCode = err.status
-          }
+          try {
+            const errBody = JSON.parse(JSON.parse(JSON.stringify(err)).response.text)
+            errBody.status = err.status
+            if (err.status) {
+              // Normalize statusCode vs. status
+              err.statusCode = err.status
+            }
 
-          return done(errBody)
+            return done(errBody)
+          } catch (e) {
+            return done('text-error-something-wrong')
+          }
         }
 
         done(null, res.body)
       })
-  },
-  getP: function(endpoint, query, body, options) {
-    return Promise.promisify(APIUtils.get.bind(APIUtils))(...arguments)
   },
   post: function(endpoint, query, body, options, done) {
     if (arguments.length === 2) {
@@ -52,37 +54,41 @@ const APIUtils = {
       query = {}
     }
 
+    var connectSid = cookie.load('connect.sid')
+
     const url = `${config.default.proxyRoot}${endpoint}`
     // const url = encodeURI(`${config.default.proxyRoot}${endpoint}`)
 
-    debug('Sending POST request to %s', url, query)
+    debug('Sending POST request to %s', url, body)
 
     request
-      // .withCredentials()
       .post(url)
-      .type("form")
+      // .type("form")
       // .set('Cookie', options && options.connectSid || '')
       // .set('accept-language', locale)
-      .send(query)
+      .send(body)
+      .withCredentials()
       .end((err, res) => {
         debug('Received response %s from %s', res && res.status, url)
-        if (err) {
-          const errBody = JSON.parse(JSON.parse(JSON.stringify(err)).response.text)
-          errBody.status = err.status
 
-          if (err.status) {
-            // Normalize statusCode vs. status
-            err.statusCode = err.status
+        if (err) {
+          try {
+            const errBody = JSON.parse(JSON.parse(JSON.stringify(err)).response.text)
+            errBody.status = err.status
+
+            if (err.status) {
+              // Normalize statusCode vs. status
+              err.statusCode = err.status
+            }
+            return done(errBody)
+          } catch (e) {
+            return done('text-error-something-wrong')
           }
-          return done(errBody)
         }
+
         done(null, res.body)
       })
   },
-  postP: function(endpoint, query, body, options, done) {
-    return Promise.promisify(APIUtils.post.bind(APIUtils))(...arguments)
-  },
-
   put: function(endpoint, query, body, options, done) {
     if (arguments.length === 2) {
       done = query
@@ -92,31 +98,35 @@ const APIUtils = {
     const url = `${config.default.proxyRoot}${endpoint}`
     // const url = encodeURI(`${config.default.proxyRoot}${endpoint}`)
 
-    debug('Sending PUT request to %s', url, query)
+    debug('Sending PUT request to %s', url, body)
 
     request
-      // .withCredentials()
       .put(url)
       // .set('Cookie', options && options.connectSid || '')
       // .set('accept-language', locale)
-      .send(query)
+      .send(body)
+      .withCredentials()
       .end((err, res) => {
         debug('Received response %s from %s', res && res.status, url)
 
         if (err) {
-          const errBody = JSON.parse(JSON.parse(JSON.stringify(err)).response.text)
-          errBody.status = err.status
-          if (err.status) {
-            // Normalize statusCode vs. status
-            err.statusCode = err.status
-            err.message = err.response.body
+          try {
+            const errBody = JSON.parse(JSON.parse(JSON.stringify(err)).response.text)
+            errBody.status = err.status
+            if (err.status) {
+              // Normalize statusCode vs. status
+              err.statusCode = err.status
+              err.message = err.response.body
+            }
+            return done(errBody)
+          } catch (e) {
+            return done('text-error-something-wrong')
           }
-          return done(errBody)
         }
+
         done(null, res.body)
       })
   },
-
   del: function(endpoint, query, options, done) {
     const url = `${config.default.proxyRoot}${endpoint}`
     // const url = encodeURI(`${config.default.proxyRoot}${endpoint}`)
@@ -129,27 +139,31 @@ const APIUtils = {
     // })
 
     request
-      // .withCredentials()
       .del(url)
       // .set('Cookie', options && options.connectSid || '')
       // .set('accept-language', locale)
       .send(query)
+      .withCredentials()
       .end((err, res) => {
         debug('Received response %s from %s', res && res.status, url)
 
         if (err) {
-          const errBody = JSON.parse(JSON.parse(JSON.stringify(err)).response.text)
-          errBody.status = err.status
-          if (err.status) {
-            // Normalize statusCode vs. status
-            err.statusCode = err.status
+          try {
+            const errBody = JSON.parse(JSON.parse(JSON.stringify(err)).response.text)
+            errBody.status = err.status
+            if (err.status) {
+              // Normalize statusCode vs. status
+              err.statusCode = err.status
+            }
+            return done(errBody)
+          } catch (e) {
+            return done('text-error-something-wrong')
           }
-          return done(errBody)
         }
+
         done(null, res.body)
       })
   }
-
 }
 
 module.exports = APIUtils
