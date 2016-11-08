@@ -24,7 +24,7 @@ class LandingParallex extends React.Component<void, Props, void> {
 
   render () {
     const wrap = {
-      height: window.innerHeight * 6,
+      height: window.innerHeight * 1,
     };
     // var word = 'awesome react';
     // var images = ['http://images.indianexpress.com/2015/12/iphone-5s-big1.jpg'];
@@ -41,30 +41,6 @@ class LandingParallex extends React.Component<void, Props, void> {
       speed: 1,
       bgColor: 'black',
       src: 'http://lushapp.co/static/img/bg/drinks.png'
-    }, {
-      name: 'Landing',
-      top: '190%',
-      speed: 1,
-      bgColor: '#286F9E',
-      src: 'http://lushapp.co/static/img/bg/design.png'
-    }, {
-      name: 'Landing',
-      top: '290%',
-      speed: 1,
-      bgColor: '#58498F',
-      src: 'http://lushapp.co/static/img/bg/logo.png'
-    }, {
-      name: 'Landing',
-      top: '390%',
-      speed: 1,
-      bgColor: '#962F5C',
-      src: 'http://lushapp.co/static/img/bg/ingredients.png'
-    }, {
-      name: 'Landing',
-      top: '490%',
-      speed: 1,
-      bgColor: '#B03333',
-      src: 'http://lushapp.co/static/img/bg/flavor.png'
     }]
     return (<div
       style={wrap}
