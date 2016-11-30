@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { fetchProfile, addTask, removeTask } from '../../users/reducers/user'
+import { fetchHistoryOpenings, updateOpening, createOpening, deleteOpening } from '../../openings/reducers/opening'
 import IOSDownload from './../../system/components/IOSDownload'
 import './../../system/styles/Landing.scss'
 
@@ -16,7 +17,15 @@ const task2Id = '5818573250e0f6bb08733c3d'
 const task3Id = '5818596150e0f6bb08733c43'
 
 class Landing extends React.Component<void, Props, void> {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {}
+  }
+
   static propTypes = {
+    openings: PropTypes.object,
     user: PropTypes.object,
     type: PropTypes.number,
     message1: PropTypes.string,
@@ -24,7 +33,11 @@ class Landing extends React.Component<void, Props, void> {
     bgColor: PropTypes.string,
     src: PropTypes.string,
     addTask: PropTypes.func.isRequired,
+    updateOpening: PropTypes.func.isRequired,
+    createOpening: PropTypes.func.isRequired,
+    deleteOpening: PropTypes.func.isRequired,
     removeTask: PropTypes.func.isRequired,
+    fetchHistoryOpenings: PropTypes.func.isRequired,
   };
 
   toggleTask1() {
@@ -57,8 +70,53 @@ class Landing extends React.Component<void, Props, void> {
     }
   }
 
+  componentDidMount () {
+    this.props.fetchHistoryOpenings()
+  }
+
+  deleteOpening(e) {
+    var children = $(e.currentTarget).parent().parent().children()
+    var id = children[0].children[0].value
+    // var type = children[1].children[0].value
+    // var quota = children[2].children[0].value
+    // var quota_open_date = children[3].children[0].value
+    // var quota_fill_date = children[4].children[0].value
+
+    this.props.deleteOpening(id)
+  }
+
+  saveOpening(e) {
+    var children = $(e.currentTarget).parent().parent().children()
+    var id = children[0].children[0].value
+    var type = children[1].children[0].value
+    var quota = children[2].children[0].value
+    var quota_open_date = children[3].children[0].value
+    var quota_fill_date = children[4].children[0].value
+
+    var info = {quota, type, quota_open_date}
+    if (quota_fill_date) {
+      info.quota_fill_date = quota_fill_date
+    }
+    this.props.updateOpening(id, info)
+  }
+
+  addOpening(e) {
+    var children = $(e.currentTarget).parent().parent().children()
+    var id = children[0].children[0].value
+    var type = children[1].children[0].value
+    var quota = children[2].children[0].value
+    var quota_open_date = children[3].children[0].value
+    var quota_fill_date = children[4].children[0].value
+
+    var info = {quota, type, quota_open_date}
+    if (quota_fill_date) {
+      info.quota_fill_date = quota_fill_date
+    }
+    this.props.createOpening(info)
+  }
+
   render() {
-    const { src, bgColor, type, user } = this.props;
+    const { src, bgColor, type, user, openings=[] } = this.props;
     const userTasks = user.tasks || []
     let { message1, message2 } = this.props;
     message1 = 'i-SINP';
@@ -94,6 +152,112 @@ class Landing extends React.Component<void, Props, void> {
                     checked={userTasks.indexOf(task3Id) > -1}
                     onChange={this.toggleTask3.bind(this)} /><a onClick={this.toggleTask3.bind(this)}> Occupations In-Demand &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </a></nav>
                     </div>
+
+                  <h3>EE Historical openings: </h3><br/>
+
+                  <table className='table table-striped'> 
+                    <thead>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td><b>EE Quota</b></td>
+                      <td><b>Opening date</b></td>
+                      <td><b>Approximate time for all openings filled</b></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {openings.filter((d) => {
+                      return d.type === 1
+                    }).map((d, i) => {
+                      if ((user.roles || []).indexOf('admin') === -1) {
+                        return <tr key={i}>
+                          <td><span className='hide'>{d._id}</span></td>
+                          <td><span className='hide'>{d.type}</span></td>
+                          <td>{d.quota}</td>
+                          <td>{d.quota_open_date && d.quota_open_date.slice(0, d.quota_open_date.indexOf('T')) || ''}</td>
+                          <td>{d.fillminutes && (d.fillminutes + ' minutes') || ''}</td>
+                        </tr>
+                      } else {
+                        return <tr key={i}>
+                          <td><input className='hide' defaultValue={d._id} /></td>
+                          <td><input className='hide' defaultValue={d.type} value={1}/></td>
+                          <td><input defaultValue={d.quota} /></td>
+                          <td><input defaultValue={d.quota_open_date || ''} /></td>
+                          <td><input defaultValue={d.quota_fill_date || ''} /></td>
+                          <td>{d.fillminutes && (d.fillminutes + ' minutes') || ''}</td>
+                          <td><button onClick={this.saveOpening.bind(this)}>save</button></td>
+                          <td><button onClick={this.deleteOpening.bind(this)}>x</button></td>
+                        </tr>
+                      }
+                    })}
+
+                    {(user && user.roles || []).indexOf('admin') > -1 &&
+                      <tr>
+                        <td><input className='hide' /></td>
+                        <td><input className='hide' value={1}/></td>
+                        <td><input /></td>
+                        <td><input /></td>
+                        <td><input /></td>
+                        <td></td>
+                        <td><button onClick={this.addOpening.bind(this)}>add</button></td>
+                      </tr>
+                    }
+
+                    </tbody>
+                  </table>
+
+                  <h3>OID Historical openings: </h3><br/>
+
+                  <table className='table table-striped'> 
+                    <thead>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td><b>OID Quota</b></td>
+                      <td><b>Opening date</b></td>
+                      <td><b>Approximate time for all openings filled</b></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {openings.filter((d) => {
+                      return d.type === 2
+                    }).map((d, i) => {
+                      if ((user.roles || []).indexOf('admin') === -1) {
+                        return <tr key={i}>
+                          <td><span className='hide'>{d._id}</span></td>
+                          <td><span className='hide'>{d.type}</span></td>
+                          <td>{d.quota}</td>
+                          <td>{d.quota_open_date && d.quota_open_date.slice(0, d.quota_open_date.indexOf('T')) || ''}</td>
+                          <td>{d.fillminutes && (d.fillminutes + ' minutes') || ''}</td>
+                        </tr>
+                      } else {
+                        return <tr key={i}>
+                          <td><input className='hide' defaultValue={d._id} /></td>
+                          <td><input className='hide' defaultValue={d.type} value={2}/></td>
+                          <td><input defaultValue={d.quota} /></td>
+                          <td><input defaultValue={d.quota_open_date || ''} /></td>
+                          <td><input defaultValue={d.quota_fill_date || ''} /></td>
+                          <td>{d.fillminutes && (d.fillminutes + ' minutes') || ''}</td>
+                          <td><button onClick={this.saveOpening.bind(this)}>save</button></td>
+                          <td><button onClick={this.deleteOpening.bind(this)}>x</button></td>
+                        </tr>
+                      }
+                    })}
+
+                    {(user && user.roles || []).indexOf('admin') > -1 &&
+                      <tr>
+                        <td><input className='hide' /></td>
+                        <td><input className='hide' value={2}/></td>
+                        <td><input /></td>
+                        <td><input /></td>
+                        <td><input /></td>
+                        <td></td>
+                        <td><button onClick={this.addOpening.bind(this)}>add</button></td>
+                      </tr>
+                    }
+
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -121,8 +285,9 @@ class Landing extends React.Component<void, Props, void> {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
+  openings: state.openings.openings
 })
 export default connect((mapStateToProps), {
-  fetchProfile, addTask, removeTask
+  fetchProfile, addTask, removeTask, fetchHistoryOpenings, updateOpening, createOpening, deleteOpening
 })(Landing)
