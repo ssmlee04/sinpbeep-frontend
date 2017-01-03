@@ -38,7 +38,7 @@ class NavbarDropdown extends React.Component<void, Props, void> {
             <div>
               <Link to='/auth/login'>
                 <button className='loginbtn btn btn-primary btn-sm navbar-initial-text' style={loginbtnStyle} >
-                  <span>Login</span>
+                  <span>navbar.login</span>
                 </button>
               </Link>
             </div>
@@ -47,7 +47,7 @@ class NavbarDropdown extends React.Component<void, Props, void> {
             <div>
               <Link to='/auth/register'>
                 <button className='registerbtn btn btn-primary btn-sm' style={registerbtnStyle}>
-                  <span>Register</span>
+                  <span>navbar.register</span>
                 </button>
               </Link>
             </div>
@@ -84,9 +84,9 @@ class NavbarDropdown extends React.Component<void, Props, void> {
     }
     return (
       <div>
+        {LoginArea}
       </div>
     )
-        // {LoginArea}
   }
 }
 

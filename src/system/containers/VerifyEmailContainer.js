@@ -2,9 +2,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { login, fetchProfile } from '../../users/reducers/user'
-import LoginComponentFacebook from '../../system/components/LoginComponentFacebook';
-import LoginComponentLocal from '../../system/components/LoginComponentLocal';
+import { login, fetchProfile, verify } from '../../users/reducers/user'
 
 type Props = {
   user: Object,
@@ -13,20 +11,23 @@ type Props = {
 // We avoid using the `@connect` decorator on the class definition so
 // that we can export the undecorated component for testing.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
-export class LoginContainer extends React.Component<void, Props, void> {
+export class VerifyEmailContainer extends React.Component<void, Props, void> {
   static propTypes = {
+    params: PropTypes.object,
     user: PropTypes.object,
-    // login: PropTypes.func.isRequired
+    verify: PropTypes.func.isRequired
   };
 
-  componentDidUpdate() {
+  componentDidMount() {
     const { user } = this.props;
-    if (user && user._id) {
-      window.location.href = '/';
-    }
+    const hash = `${this.props.params.hash}`
+
+    this.props.verify(hash)
   }
 
   render() {
+    const hash = `${this.props.params.hash}`
+
     return (
       <div className='quotefont' style={{marginTop: '58px'}}>
         <br/>
@@ -37,8 +38,6 @@ export class LoginContainer extends React.Component<void, Props, void> {
         <br/>
         <div className='row'>
           <div className='col-md-offset-4 col-md-6'>
-            <hr/>
-            <LoginComponentLocal/>
           </div>
         </div>
       </div>
@@ -50,5 +49,5 @@ const mapStateToProps = (state) => ({
   user: state.user
 })
 export default connect((mapStateToProps), {
-  fetchProfile
-})(LoginContainer)
+  fetchProfile, verify
+})(VerifyEmailContainer)

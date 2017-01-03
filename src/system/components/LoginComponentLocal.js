@@ -39,7 +39,7 @@ export class LoginComponentLocal extends React.Component<void, Props, void> {
         <div className='signin form-horizontal'>
           <div className='form-group'>
             <label className='col-md-4 control-label'>
-              <span>login.email</span>
+              <span>E-mail</span>
             </label>
             <div className='col-md-6'>
               <input onKeyUp={this.handleKeyup.bind(this)} required ref='email' id='email' type='email' name='email' placeholder='Email' className='form-control'/>
@@ -47,7 +47,7 @@ export class LoginComponentLocal extends React.Component<void, Props, void> {
           </div>
           <div className='form-group'>
             <label className='col-md-4 control-label'>
-              <span>login.password</span>
+              <span>Password</span>
             </label>
             <div className='col-md-6'>
               <input onKeyUp={this.handleKeyup.bind(this)} required ref='password' id='password' type='password' name='password' placeholder='Password' className='form-control'/>
@@ -56,17 +56,17 @@ export class LoginComponentLocal extends React.Component<void, Props, void> {
           <div className='form-group'>
             <div className='col-md-offset-4 col-md-8'>
               <button onClick={this.localLogin.bind(this)} className='btn btn-success btn-sm'>
-                <span>login.login</span>
+                <span>Login</span>
               </button>
             </div>
           </div>
           <div className='form-group'>
             <div className='col-md-offset-4 col-md-8'>
               <a className='inline'><h6 className='inline'>
-                <span>login.forgotpassword</span>
+                <span>Forget password</span>
               </h6></a> &nbsp; | &nbsp;&nbsp;
               <a className='inline' href='/auth/register'><h6 className='inline'>
-                <span>login.register</span>
+                <span>Register</span>
               </h6></a> 
             </div>
           </div>

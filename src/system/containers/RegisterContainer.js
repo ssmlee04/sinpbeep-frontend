@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { register, fetchProfile } from '../../users/reducers/user'
 import ReactDOM from 'react-dom'
-import CalendarComponent from './../../system/components/CalendarComponent'
+// import CalendarComponent from './../../system/components/CalendarComponent'
 
 type Props = {
   user: Object,
@@ -28,22 +28,22 @@ export class RegisterContainer extends React.Component<void, Props, void> {
 
   localRegister () {
     const name = ReactDOM.findDOMNode(this.refs.name).value
-    const sex0 = ReactDOM.findDOMNode(this.refs.sex0).checked
     const sex1 = ReactDOM.findDOMNode(this.refs.sex1).checked
-    const birthdate = ReactDOM.findDOMNode(this.refs.birthdate).value
+    const sex2 = ReactDOM.findDOMNode(this.refs.sex2).checked
+    // const birthdate = ReactDOM.findDOMNode(this.refs.birthdate).value
     const email = ReactDOM.findDOMNode(this.refs.email).value
     const password = ReactDOM.findDOMNode(this.refs.password).value
     const confirmPassword = ReactDOM.findDOMNode(this.refs.confirmPassword).value
     const info = {
-      name, email, birthdate, sex0, sex1, password, confirmPassword,
-      sex : sex0 && '0' || sex1 && '1'
+      name, email, password, confirmPassword,
+      sex : sex1 && 1 || sex2 && 2
     }
     this.props.register(info)
   }
 
   render () {
     return (
-      <div> 
+      <div className='quotefont'> 
         <br/>
         <br/>
         <br/>
@@ -55,12 +55,12 @@ export class RegisterContainer extends React.Component<void, Props, void> {
             <div className='form-group'>
               <label className='col-md-3 control-label'></label>
               <div className='col-md-5'>
-              Register an account:
+                <b>Register an account</b>
               </div>
             </div>
             <div className='form-group'>
               <label className='col-md-4 control-label'>
-                global.email
+                E-mail
               </label>
               <div className='col-md-5'>
                 <input onKeyUp={this.handleKeyup.bind(this)} id='email' type='email' ref='email' name='email' placeholder='email' className='form-control' />
@@ -68,7 +68,7 @@ export class RegisterContainer extends React.Component<void, Props, void> {
             </div>
             <div className='form-group'>
               <label className='col-md-4 control-label'>
-                global.fullname
+                Name
               </label>
               <div className='col-md-5'>
                 <input onKeyUp={this.handleKeyup.bind(this)} id='name' type='text' ref='name' name='name' placeholder='name' className='form-control' />
@@ -76,23 +76,15 @@ export class RegisterContainer extends React.Component<void, Props, void> {
             </div>
             <div className='form-group'>
               <label className='col-md-4 control-label'>
-                global.gender
+                Gender
               </label>
               <div className='col-md-5'> 
-                <input type='radio' name='sex' ref='sex0' className='radio-inline' value='0'/> <span>&nbsp;
-                  global.male
+                <input type='radio' name='sex' ref='sex1' className='radio-inline' value='0'/> <span>&nbsp;
+                  Male
                 &nbsp;&nbsp;</span>
-                <input type='radio' name='sex' ref='sex1' className='radio-inline' value='1'/> <span>&nbsp;
-                  global.female
+                <input type='radio' name='sex' ref='sex2' className='radio-inline' value='1'/> <span>&nbsp;
+                  Female
                 </span>
-              </div>
-            </div>
-            <div className='form-group'>
-              <label className='col-md-4 control-label'>
-                global.birthday
-              </label>
-              <div className='col-md-2'>
-                <CalendarComponent ref='birthdate' />
               </div>
             </div>
             <div className='form-group'>
@@ -102,7 +94,7 @@ export class RegisterContainer extends React.Component<void, Props, void> {
             </div>
             <div className='form-group'>
               <label className='col-md-4 control-label'>
-                global.password
+                Password
               </label>
               <div className='col-md-5'>
                 <input onKeyUp={this.handleKeyup.bind(this)} id='password' type='password' name='password' ref='password' placeholder='password' className='form-control' />
@@ -110,7 +102,7 @@ export class RegisterContainer extends React.Component<void, Props, void> {
             </div>
             <div className='form-group'>
               <label className='col-md-4 control-label'>
-                global.passwordrepeat
+                Confirm Password
               </label>
               <div className='col-md-5'>
                 <input onKeyUp={this.handleKeyup.bind(this)} id='confirmPassword' type='password' name='confirmPassword' ref='confirmPassword' placeholder='password' className='form-control' />
@@ -119,7 +111,7 @@ export class RegisterContainer extends React.Component<void, Props, void> {
             <div className='form-group'>
               <div className='col-md-offset-4 col-md-5'>
                 <button onClick={this.localRegister.bind(this)} className='btn btn-primary'>
-                  global.signup
+                  Signup
                 </button>
               </div>
             </div>

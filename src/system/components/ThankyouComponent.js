@@ -11,17 +11,14 @@ class ThankyouComponent extends React.Component<void, Props, void> {
 
   render () {
     return (
-      <div className='col-md-offset-3'>
+      <div style={{textAlign: 'center'}} className='quotesfont'>
         <br/>
         <br/>
         <br/>
         <br/>
+        <h3>Thank you for your registration. <br/>Please check your inbox and verify your email..</h3>
         <br/>
-        <br/>
-        <br/>
-        thank you. please verify your email..
-        <br/>
-        <br/>
+        <img src={'https://cbi-blog.s3.amazonaws.com/blog/wp-content/uploads/2015/03/Canada-Flag-City-View-cropped.png'} />
         <br/>
         <br/>
         <br/>

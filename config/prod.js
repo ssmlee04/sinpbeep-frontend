@@ -2,9 +2,9 @@
 // Do not require this directly. Use ./src/config instead.
 
 export default {
-  apiRoot: 'http://apis.singlebeep.com',
+  apiRoot: 'https://maplecrab.com',
 
-  proxyRoot: 'http://singlebeep.com',
+  proxyRoot: 'https://maplecrab.com',
 
   // 500px consumer key
   consumerKey: 'CLmpqnpwGLKetORtjc5gb9tC2hllfd6cqdfzHqFD',

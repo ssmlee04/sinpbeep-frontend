@@ -5,26 +5,40 @@
 export const SET_SYSTEM_POPUPS = 'SET_SYSTEM_POPUPS'
 export const FETCH_PROFILE = 'FETCH_PROFILE'
 
-import { get, post } from '../../../utils/APIUtils'
+import { get, post, del } from '../../../utils/APIUtils'
+import Dictionary from './../../../dictionary'
 import validator from 'validator'
+
+const validateLoginInputs = function (query) {
+  // const pattern = new RegExp(/^[a-z0-9]{3,15}$/)
+  // query.birthdate = query.birthdate.replace(/-/g, '/')
+  if (!query) {
+    return {error: 'text-error-info'}
+  } else if (!validator.isEmail(query.email)) {
+    return {error: 'text-error-info-email'}
+  } else if (!query.password) {
+    return {error: 'text-error-info-password'}
+  }
+  return {success: true}
+}
 
 const validateRegisterInputs = function (query) {
   // const pattern = new RegExp(/^[a-z0-9]{3,15}$/)
-  query.birthdate = query.birthdate.replace(/-/g, '/')
+  // query.birthdate = query.birthdate.replace(/-/g, '/')
   if (!query) {
-    return {error: 'please make sure all the inputs are correct'}
+    return {error: 'text-error-info'}
   } else if (!validator.isEmail(query.email)) {
-    return {error: 'make sure email format is correct...'}
+    return {error: 'text-error-info-email'}
   } else if (!query.password) {
-    return {error: 'please make sure password are correct'}
+    return {error: 'text-error-info-password'}
   } else if (query.password.length < 8) {
-    return {error: 'please make sure password have 8 more characters'}
-  } else if (['0', '1'].indexOf(query.sex) === -1) {
-    return {error: 'choose a gender'}
-  } else if (!validator.isDate(query.birthdate)) {
-    return {error: 'make sure birthday format is correct...'}
+    return {error: 'text-error-info-password-length'}
+  } else if (query.password !== query.confirmPassword) {
+    return {error: 'text-error-info-password-mismatch'}
+  } else if ([1, 2].indexOf(query.sex) === -1) {
+    return {error: 'text-error-info-gender'}
   } else if (!query.name) {
-    return {error: 'please make sure name are correct'}
+    return {error: 'text-error-info-name'}
   }
   return {success: true}
 }
@@ -39,11 +53,11 @@ const validateRegisterInputs = function (query) {
 // incorrectly thrown when using arrow functions, hence the oddity.
 export function fetchProfile (): Action {
   return (dispatch) => {
-    get('/apis/v1/loggedin', {}, {}, function (err, d) {
+    get('/apis/v1/auth/loggedin', {}, {}, function (err, d) {
       if (err) {
         return dispatch({
           type: SET_SYSTEM_POPUPS,
-          payload: {type: 'error', message: err.error}
+          payload: {type: 'error', message: Dictionary.parse(err.error)}
         })
       }
       if (d) {
@@ -61,11 +75,11 @@ export function fetchProfile (): Action {
 
 export function logout (): Action {
   return (dispatch) => {
-    get('/apis/v1/logout', {}, {}, function (err, d) {
+    get('/apis/v1/auth/logout', {}, {}, function (err, d) {
       if (err) {
         return dispatch({
           type: SET_SYSTEM_POPUPS,
-          payload: {type: 'error', message: err.error}
+          payload: {type: 'error', message: Dictionary.parse(err.error)}
         })
       }
       dispatch({
@@ -77,12 +91,21 @@ export function logout (): Action {
 }
 
 export function login ({email, password}): Action {
+  var validateResult = validateLoginInputs({email, password})
+
+  if (!validateResult.success) {
+    return {
+      type: SET_SYSTEM_POPUPS,
+      payload: {type: 'error', message: Dictionary.parse(validateResult.error)}
+    }
+  }
+
   return (dispatch) => {
-    post('/apis/v1/login', {email, password}, {}, {}, function(err, d){
+    post('/apis/v1/auth/login', {}, {email, password}, {login: true}, function(err, d){
       if (err) {
         return dispatch({
           type: SET_SYSTEM_POPUPS,
-          payload: {type: 'error', message: err.error}
+          payload: {type: 'error', message: Dictionary.parse(err.error)}
         })
       }
       dispatch({
@@ -93,21 +116,21 @@ export function login ({email, password}): Action {
   }
 }
 
-export function register ({email, password, sex, name, birthdate}): Action {
-  var validateResult = validateRegisterInputs({email, password, sex, name, birthdate})
+export function register ({email, password, sex, name, birthdate, confirmPassword}): Action {
+  var validateResult = validateRegisterInputs({email, password, sex, name, birthdate, confirmPassword})
   if (!validateResult.success) {
     return {
       type: SET_SYSTEM_POPUPS,
-      payload: {type: 'error', message: validateResult.error}
+      payload: {type: 'error', message: Dictionary.parse(validateResult.error)}
     }
   }
 
   return (dispatch) => {
-    post('/apis/v1/register', {email, password, sex, name, birthdate}, {}, {}, function (err, d) {
+    post('/apis/v1/auth/register', {}, {email, password, sex, name, birthdate}, {}, function (err, d) {
       if (err) {
         return dispatch({
           type: SET_SYSTEM_POPUPS,
-          payload: {type: 'error', message: err.error}
+          payload: {type: 'error', message: Dictionary.parse(err.error)}
         })
       }
       window.location.href = '/thankyou'
@@ -115,13 +138,74 @@ export function register ({email, password, sex, name, birthdate}): Action {
   }
 }
 
-export function loginFB ({access_token}): Action {
-  return (dispatch) => {
-    post('/apis/v1/auth/facebook/token', {access_token}, {}, {}, function (err, d) {
+export function addTask (routineId, taskId): Action {
+  return (dispatch, getState) => {
+    let { user } = getState()
+    user = JSON.parse(JSON.stringify(user))
+
+    post(`/apis/v1/routines/${routineId}/tasks/${taskId}`, {}, {}, {}, function (err, d) {
       if (err) {
         return dispatch({
           type: SET_SYSTEM_POPUPS,
-          payload: {type: 'error', message: err.error}
+          payload: {type: 'error', message: Dictionary.parse(err.error)}
+        })
+      }
+      user.tasks = user.tasks || []
+
+      if (user.tasks.indexOf(taskId) === -1) {
+        user.tasks.push(taskId)
+
+        dispatch({
+          type: FETCH_PROFILE,
+          payload: user
+        })
+        dispatch({
+          type: SET_SYSTEM_POPUPS,
+          payload: {type: 'success', message: Dictionary.parse('text-success-add-task')}
+        })
+      }
+    })
+  }
+}
+
+export function removeTask (routineId, taskId): Action {
+  return (dispatch, getState) => {
+    let { user } = getState()
+    user = JSON.parse(JSON.stringify(user))
+
+    del(`/apis/v1/routines/${routineId}/tasks/${taskId}`, {}, {}, function (err, d) {
+      if (err) {
+        return dispatch({
+          type: SET_SYSTEM_POPUPS,
+          payload: {type: 'error', message: Dictionary.parse(err.error)}
+        })
+      }
+
+      user.tasks = user.tasks || []
+
+      if (user.tasks.indexOf(taskId) > -1) {
+        user.tasks.splice(user.tasks.indexOf(taskId), 1)
+
+        dispatch({
+          type: FETCH_PROFILE,
+          payload: user
+        })
+        dispatch({
+          type: SET_SYSTEM_POPUPS,
+          payload: {type: 'success', message: Dictionary.parse('text-success-remove-task')}
+        })
+      }
+    })
+  }
+}
+
+export function loginFB ({access_token}): Action {
+  return (dispatch) => {
+    post('/apis/v1/auth/facebook/token', {}, {access_token}, {}, function (err, d) {
+      if (err) {
+        return dispatch({
+          type: SET_SYSTEM_POPUPS,
+          payload: {type: 'error', message: Dictionary.parse(err.error)}
         })
       }
       dispatch({
@@ -132,8 +216,25 @@ export function loginFB ({access_token}): Action {
   }
 }
 
+export function verify (hash): Action {
+  return (dispatch) => {
+    get(`/apis/v1/auth/verifyemail/${hash}`, {}, {}, function (err, d) {
+      if (err) {
+        return dispatch({
+          type: SET_SYSTEM_POPUPS,
+          payload: {type: 'error', message: Dictionary.parse(err.error)}
+        })
+      }
+      dispatch({
+        type: SET_SYSTEM_POPUPS,
+        payload: {type: 'success', message: Dictionary.parse('text-success-verify-email')}
+      })
+    })
+  }
+}
+
 export const actions = {
-  fetchProfile, logout, login, loginFB
+  fetchProfile, logout, login, loginFB, addTask, removeTask, verify
 }
 
 // ------------------------------------
