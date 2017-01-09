@@ -30,7 +30,9 @@ export function fetchHistoryOpenings (): Action {
       }
       dispatch({
         type: FETCH_OPENINGS,
-        payload: {openings: (d || [])}
+        payload: {openings: (d && d.sort((a, b) => {
+          return Date.parse(new Date(b.quota_open_date)) - Date.parse(new Date(a.quota_open_date))
+        }) || [])}
       })
     })
   }

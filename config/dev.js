@@ -2,7 +2,7 @@
 // Do not require this directly. Use ./src/config instead.
 
 export default {
-  apiRoot: 'http://localhost:4000',
+  apiRoot: 'http://52.34.100.125',
 
   proxyRoot: 'http://localhost:3030',
 

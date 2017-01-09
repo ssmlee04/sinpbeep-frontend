@@ -7,9 +7,10 @@ import { fetchProfile, addTask, removeTask } from '../../users/reducers/user'
 import { fetchHistoryOpenings, updateOpening, createOpening, deleteOpening } from '../../openings/reducers/opening'
 import IOSDownload from './../../system/components/IOSDownload'
 import './../../system/styles/Landing.scss'
+import YouTube from 'react-youtube'
 
 type Props = {
-  
+
 };
 const routine1Id = '5818572750e0f6bb08733c3c'
 const task1Id = '5818597b50e0f6bb08733c44'
@@ -136,7 +137,30 @@ class Landing extends React.Component<void, Props, void> {
             <div className='row'>
               <div className='col-lg-12'>
                 <div className='intro-message2'>
-                  <img src='http://0.tqn.com/d/canadaonline/1/S/g/Q/national-flag-canada-lge2.jpg' style={{height: 140, width: 200}}/>
+                  <div className='flag-bg' style={{display: 'inline-block', height: '260', width: '400'}}>
+                  </div>
+                  <div style={{display: 'inline-block', height: '260', width: '400'}}>
+                    <YouTube
+                      videoId={'9_L_0ln53PM'}                  // defaults -> null
+                      // id={string}                       // defaults -> null
+                      // className={string}                // defaults -> null
+                      opts={{
+                        height: '100%',
+                        width: '100%',
+                        playerVars: {
+                          autoplay: 1
+                        }
+                      }}                        // defaults -> {}
+                      // onReady={func}                    // defaults -> noop
+                      // onPlay={func}                     // defaults -> noop
+                      // onPause={func}                    // defaults -> noop
+                      // onEnd={func}                      // defaults -> noop
+                      // onError={func}                    // defaults -> noop
+                      // onStateChange={func}              // defaults -> noop
+                      // onPlaybackRateChange={func}       // defaults -> noop
+                      // onPlaybackQualityChange={func}    // defaults -> noop
+                    />
+                  </div>
                   <div style={{height: 50}} />
                   <nav><b style={{fontSize: 36, fontWeight: 'bold'}}>{message1}</b></nav>
                   <nav><a style={{color: 'crimson'}}>Select the category you would like to receive an E-mail notification. <br/> The notification will be sent to you 5 times once the category is open. </a></nav>
@@ -155,7 +179,7 @@ class Landing extends React.Component<void, Props, void> {
 
                   <h3>EE Historical openings: </h3><br/>
 
-                  <table className='table table-striped'> 
+                  <table className='table table-striped'>
                     <thead>
                     <tr>
                       <td></td>
@@ -208,7 +232,7 @@ class Landing extends React.Component<void, Props, void> {
 
                   <h3>OID Historical openings: </h3><br/>
 
-                  <table className='table table-striped'> 
+                  <table className='table table-striped'>
                     <thead>
                     <tr>
                       <td></td>
