@@ -130,6 +130,29 @@ class Landing extends React.Component<void, Props, void> {
     }
     style.backgroundColor = bgColor
 
+    /*<div style={{display: 'inline-block', height: '260', width: '400'}}>
+      <YouTube
+        videoId={'9_L_0ln53PM'}                  // defaults -> null
+        // id={string}                       // defaults -> null
+        // className={string}                // defaults -> null
+        opts={{
+          height: '100%',
+          width: '100%',
+          playerVars: {
+            autoplay: 1
+          }
+        }}                        // defaults -> {}
+        // onReady={func}                    // defaults -> noop
+        // onPlay={func}                     // defaults -> noop
+        // onPause={func}                    // defaults -> noop
+        // onEnd={func}                      // defaults -> noop
+        // onError={func}                    // defaults -> noop
+        // onStateChange={func}              // defaults -> noop
+        // onPlaybackRateChange={func}       // defaults -> noop
+        // onPlaybackQualityChange={func}    // defaults -> noop
+      />
+    </div>*/
+
     if (type === 1) {
       return (
         <div className='intro-header' style={style}>
@@ -139,28 +162,9 @@ class Landing extends React.Component<void, Props, void> {
                 <div className='intro-message2'>
                   <div className='flag-bg' style={{display: 'inline-block', height: '260', width: '400'}}>
                   </div>
-                  <div style={{display: 'inline-block', height: '260', width: '400'}}>
-                    <YouTube
-                      videoId={'9_L_0ln53PM'}                  // defaults -> null
-                      // id={string}                       // defaults -> null
-                      // className={string}                // defaults -> null
-                      opts={{
-                        height: '100%',
-                        width: '100%',
-                        playerVars: {
-                          autoplay: 1
-                        }
-                      }}                        // defaults -> {}
-                      // onReady={func}                    // defaults -> noop
-                      // onPlay={func}                     // defaults -> noop
-                      // onPause={func}                    // defaults -> noop
-                      // onEnd={func}                      // defaults -> noop
-                      // onError={func}                    // defaults -> noop
-                      // onStateChange={func}              // defaults -> noop
-                      // onPlaybackRateChange={func}       // defaults -> noop
-                      // onPlaybackQualityChange={func}    // defaults -> noop
-                    />
+                  <div className='flag-bg' style={{display: 'inline-block', height: '260', width: '400'}}>
                   </div>
+                  
                   <div style={{height: 50}} />
                   <nav><b style={{fontSize: 36, fontWeight: 'bold'}}>{message1}</b></nav>
                   <nav><a style={{color: 'crimson'}}>Select the category you would like to receive an E-mail notification. <br/> The notification will be sent to you 5 times once the category is open. </a></nav>
